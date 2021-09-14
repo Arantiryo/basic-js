@@ -18,3 +18,13 @@ export default class DepthCalculator {
     // remove line with error and write your code here
   }
 }
+
+// class DepthCalculator {
+//   calculateDepth(arr, level = 0) {
+//     return arr.reduce( (prev, cur) =>  )    
+//   }
+// };
+
+// const depthCalc = new DepthCalculator();
+
+// console.log(depthCalc.calculateDepth([1, 2, 3, 4, 5]))
