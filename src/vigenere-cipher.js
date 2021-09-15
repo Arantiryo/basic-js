@@ -20,12 +20,51 @@ import { NotImplementedError } from '../extensions/index.js';
  * 
  */
 export default class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(directMachine = true) {
+    this.type = directMachine === true ? 'direct' : 'reverse'
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  encrypt(message, key) {
+    if (typeof message === 'undefined' || typeof key === 'undefined') throw new Error('Incorrect arguments!') 
+
+    message = message.toUpperCase()
+    key = key.toUpperCase()
+
+    while (key.length < message.length) key = key.repeat(2)
+    key = key.slice(0, message.length)
+
+    let idx = 0
+    let newString = message.split('').map((el) => {
+      const elCode = el.charCodeAt(0)
+      if (elCode < 65 || elCode > 90) return el
+
+      const keyCode = key[idx].charCodeAt(0)
+      let newCode = (elCode + keyCode - 65 > 90) ? elCode + keyCode - 91 : elCode + keyCode - 65
+      idx += 1
+      return String.fromCharCode(newCode)
+    }).join('')
+
+    return this.type === 'direct' ? newString : newString.split('').reverse().join('')
+  }
+  decrypt(message, key) {
+    if (typeof message === 'undefined' || typeof key === 'undefined') throw new Error('Incorrect arguments!') 
+
+    message = message.toUpperCase()
+    key = key.toUpperCase()
+
+    while (key.length < message.length) key = key.repeat(2)
+    key = key.slice(0, message.length)
+
+    let idx = 0
+    let newString = message.split('').map((el) => {
+      const elCode = el.charCodeAt(0)
+      if (elCode < 65 || elCode > 90) return el
+
+      const keyCode = key[idx].charCodeAt(0)
+      let newCode = (elCode - keyCode + 65 < 65) ? elCode - keyCode + 91 : elCode - keyCode + 65
+      idx += 1
+      return String.fromCharCode(newCode)
+    }).join('')
+
+    return this.type === 'direct' ? newString : newString.split('').reverse().join('')
   }
 }
